@@ -8,7 +8,7 @@ export default class RangePicker {
   };
 
   static formatDate (date) {
-    return date.toLocaleString('ru', {dateStyle: 'short'})
+    return date.toLocaleString('en', {dateStyle: 'short'})
   }
 
   onDocumentClick = event => {
@@ -165,7 +165,7 @@ export default class RangePicker {
     date.setDate(1);
 
     // text-transform: capitalize
-    const monthStr = date.toLocaleString('ru', {month: 'long'});
+    const monthStr = date.toLocaleString('en', {month: 'long'});
 
     let table = `<div class="rangepicker__calendar">
       <div class="rangepicker__month-indicator">
