@@ -1,6 +1,6 @@
 import fetchJson from "../../utils/fetch-json.js";
 
-const BACKEND_URL = 'https://course-js.javascript.ru';
+const BACKEND_URL = process.env.BACKEND_URL;
 
 export default class SortableTable {
   element;
@@ -15,7 +15,7 @@ export default class SortableTable {
     const { bottom } = this.element.getBoundingClientRect();
     const { id, order } = this.sorted;
 
-    if (bottom < document.documentElement.clientHeight && !this.loading && !this.sortLocally) {
+    if (bottom < document.documentElement.clientHeight && !this.loading && !this.isSortLocally) {
       this.start = this.end;
       this.end = this.start + this.step;
 
@@ -54,7 +54,9 @@ export default class SortableTable {
       if (this.isSortLocally) {
         this.sortLocally(id, newOrder);
       } else {
-        this.sortOnServer(id, newOrder, 1, 1 + this.step);
+        this.start = 1;
+        this.end = 1 + this.step;
+        this.sortOnServer(id, newOrder, this.start, this.end);
       }
     }
   };
@@ -68,7 +70,10 @@ export default class SortableTable {
     isSortLocally = false,
     step = 20,
     start = 1,
-    end = start + step
+    end = start + step,
+    from = null,
+    to = null,
+    filtered = null,
   } = {}) {
 
     this.headersConfig = headersConfig;
@@ -78,6 +83,10 @@ export default class SortableTable {
     this.step = step;
     this.start = start;
     this.end = end;
+    //In ISO format, use Date.toISOString
+    this.from = from;
+    this.to = to;
+    this.filtered = filtered;
 
     this.render();
   }
@@ -101,12 +110,34 @@ export default class SortableTable {
   }
 
   async loadData (id, order, start = this.start, end = this.end) {
+    if (this.from && this.to) {
+      this.url.searchParams.set('createdAt_gte', this.from);
+      this.url.searchParams.set('createdAt_lte', this.to);
+    }
+
+    if (this.filtered) {
+      const { price_gte, price_lte, title_like, status } = this.filtered;
+
+      this.url.searchParams.set('price_gte', price_gte);
+      this.url.searchParams.set('price_lte', price_lte);
+      
+      if (title_like) {
+        this.url.searchParams.set('title_like', title_like);
+      }
+
+      if (status) {
+        this.url.searchParams.set('status', status);
+      }
+
+    }
+
     this.url.searchParams.set('_sort', id);
     this.url.searchParams.set('_order', order);
     this.url.searchParams.set('_start', start);
     this.url.searchParams.set('_end', end);
 
     this.element.classList.add('sortable-table_loading');
+    
 
     const data = await fetchJson(this.url);
 
@@ -117,8 +148,13 @@ export default class SortableTable {
 
   addRows (data) {
     this.data = data;
-
     this.subElements.body.innerHTML = this.getTableRows(data);
+
+    if (data.length) {
+      this.element.classList.remove('sortable-table_empty');
+    } else {
+      this.element.classList.add('sortable-table_empty');
+    }
   }
 
   update (data) {
@@ -127,11 +163,8 @@ export default class SortableTable {
     this.data = [...this.data, ...data];
     rows.innerHTML = this.getTableRows(data);
 
-    // TODO: This is comparison of performance append vs insertAdjacentHTML
-    // console.time('timer');
-    // this.subElements.body.insertAdjacentHTML('beforeend', rows.innerHTML);
     this.subElements.body.append(...rows.childNodes);
-    // console.timeEnd('timer');
+    return rows;
   }
 
   getTableHeader() {
@@ -170,9 +203,9 @@ export default class SortableTable {
 
   getTableRows (data) {
     return data.map(item => `
-      <div class="sortable-table__row">
+      <a href="/products/${item.id}" class="sortable-table__row">
         ${this.getTableRow(item, data)}
-      </div>`
+      </a>`
     ).join('');
   }
 
@@ -200,7 +233,7 @@ export default class SortableTable {
         <div data-element="loading" class="loading-line sortable-table__loading-line"></div>
 
         <div data-element="emptyPlaceholder" class="sortable-table__empty-placeholder">
-          No products
+          No data
         </div>
       </div>`;
   }

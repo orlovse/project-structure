@@ -57,11 +57,10 @@ export default class ColumnChart {
     const element = document.createElement('div');
 
     element.innerHTML = this.template;
+
     this.element = element.firstElementChild;
 
-    if (this.data.length) {
-      this.element.classList.remove(`column-chart_loading`);
-    }
+    this.element.classList.remove(`column-chart_loading`);
 
     this.subElements = this.getSubElements(this.element);
 

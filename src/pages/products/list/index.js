@@ -109,8 +109,8 @@ export default class Page {
     return `
     <div class="products-list">
       <div class="content__top-panel">
-        <h1 class="page-title">Товары</h1>
-        <a href="/products/add" class="button-primary">Добавить товар</a>
+        <h1 class="page-title">Products</h1>
+        <a href="/products/add" class="button-primary">Add product</a>
       </div>
       <div data-element="sortPanel">
         <!-- sort-panel component -->
