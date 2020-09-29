@@ -75,44 +75,44 @@ export default class ProductForm {
       <form data-element="productForm" class="form-grid">
         <div class="form-group form-group__half_left">
           <fieldset>
-            <label class="form-label">Название товара</label>
+            <label class="form-label">Product Name</label>
             <input required
               id="title"
               value=""
               type="text"
               name="title"
               class="form-control"
-              placeholder="Название товара">
+              placeholder="Product Name">
           </fieldset>
         </div>
 
         <div class="form-group form-group__wide">
-          <label class="form-label">Описание</label>
+          <label class="form-label">Description</label>
           <textarea required
             id="description"
             class="form-control"
             name="description"
-            placeholder="Описание товара"></textarea>
+            placeholder="Description"></textarea>
         </div>
 
         <div class="form-group form-group__wide">
-          <label class="form-label">Фото</label>
+          <label class="form-label">Photo</label>
 
           <div data-element="imageListContainer"></div>
 
           <button data-element="uploadImage" type="button" class="button-primary-outline">
-            <span>Загрузить</span>
+            <span>Upload</span>
           </button>
         </div>
 
         <div class="form-group form-group__half_left">
-          <label class="form-label">Категория</label>
+          <label class="form-label">Category</label>
             ${this.createCategoriesSelect()}
         </div>
 
         <div class="form-group form-group__half_left form-group__two-col">
           <fieldset>
-            <label class="form-label">Цена ($)</label>
+            <label class="form-label">Price ($)</label>
             <input required
               id="price"
               value=""
@@ -122,7 +122,7 @@ export default class ProductForm {
               placeholder="${this.defaultFormData.price}">
           </fieldset>
           <fieldset>
-            <label class="form-label">Скидка ($)</label>
+            <label class="form-label">Discount ($)</label>
             <input required
               id="discount"
               value=""
@@ -134,7 +134,7 @@ export default class ProductForm {
         </div>
 
         <div class="form-group form-group__part-half">
-          <label class="form-label">Количество</label>
+          <label class="form-label">Amount</label>
           <input required
             id="quantity"
             value=""
@@ -145,16 +145,16 @@ export default class ProductForm {
         </div>
 
         <div class="form-group form-group__part-half">
-          <label class="form-label">Статус</label>
+          <label class="form-label">Status</label>
           <select id="status" class="form-control" name="status">
-            <option value="1">Активен</option>
-            <option value="0">Неактивен</option>
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
           </select>
         </div>
 
         <div class="form-buttons">
           <button type="submit" name="save" class="button-primary-outline">
-            ${this.productId ? 'Сохранить' : 'Добавить'} товар
+            ${this.productId ? 'Save' : 'Add'} product
           </button>
         </div>
       </form>
@@ -195,8 +195,8 @@ export default class ProductForm {
 
   getEmptyTemplate() {
     return `<div>
-      <h1 class="page-title">Страница не найдена</h1>
-      <p>Извините, данный товар не существует</p>
+      <h1 class="page-title">Page not found</h1>
+      <p>Sorry, this product does not exist.</p>
     </div>`;
   }
 

@@ -172,7 +172,7 @@ export default class RangePicker {
         <time datetime=${monthStr}>${monthStr}</time>
       </div>
       <div class="rangepicker__day-of-week">
-        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
       </div>
       <div class="rangepicker__date-grid">
     `;

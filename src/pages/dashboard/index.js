@@ -24,19 +24,54 @@ export default class Page {
   }
 
   async updateTableComponent (from, to) {
+
+    this.updateCssClass(["sortableTable"], "add", ["sortable-table_loading"]);
+
     const data = await fetchJson(`${process.env.BACKEND_URL}api/dashboard/bestsellers?_start=1&_end=20&from=${from.toISOString()}&to=${to.toISOString()}`);
     this.components.sortableTable.addRows(data);
+
+    this.updateCssClass(["sortableTable"], "remove", ["sortable-table_loading"]); 
   }
 
   async updateChartsComponents (from, to) {
+    const columnChartNames = ["ordersChart", "salesChart", "customersChart"];
+    const cssClassList = ["column-chart_loading"];
+    this.updateCssClass(columnChartNames, "add", cssClassList);
+
     const [ordersData, salesData, customersData] = await this.getDataForColumnCharts(from, to);
-    const ordersDataTotal = ordersData.reduce((accum, item) => accum + item);
-    const salesDataTotal = salesData.reduce((accum, item) => accum + item);
-    const customersDataTotal = customersData.reduce((accum, item) => accum + item);
+    const ordersDataTotal = ordersData.reduce((accum, item) => accum + item, 0);
+    const salesDataTotal = salesData.reduce((accum, item) => accum + item, 0);
+    const customersDataTotal = customersData.reduce((accum, item) => accum + item, 0);
 
     this.components.ordersChart.update({headerData: ordersDataTotal, bodyData: ordersData});
     this.components.salesChart.update({headerData: '$' + salesDataTotal, bodyData: salesData});
     this.components.customersChart.update({headerData: customersDataTotal, bodyData: customersData});
+
+    this.updateCssClass(columnChartNames, "remove", cssClassList);
+  }
+
+  /**
+   * Adds or removes css class(es) from component(s)
+   * 
+   * @param {array} componentNamesList 
+   * @param {string} action ['add' | 'remove']
+   * @param {array} classNameList 
+   */
+  updateCssClass(componentNamesList, action, classNameList) {
+    for (const componentName of componentNamesList) {
+      const {element} = this.components[componentName];
+
+      for (const className of classNameList) {
+        switch (action) {
+          case "add":
+            element.classList.add(className);
+            break;
+          case "remove":
+            element.classList.remove(className);
+            break;
+        }
+      }
+    }
   }
 
   async initComponents () {
@@ -57,20 +92,20 @@ export default class Page {
     const ordersChart = new ColumnChart({
       data: ordersData,
       label: 'orders',
-      value: ordersData.reduce((accum, item) => accum + item),
+      value: ordersData.reduce((accum, item) => accum + item, 0),
       link: '#'
     });
 
     const salesChart = new ColumnChart({
       data: salesData,
       label: 'sales',
-      value: '$' + salesData.reduce((accum, item) => accum + item),
+      value: '$' + salesData.reduce((accum, item) => accum + item, 0),
     });
 
     const customersChart = new ColumnChart({
       data: customersData,
       label: 'customers',
-      value: customersData.reduce((accum, item) => accum + item),
+      value: customersData.reduce((accum, item) => accum + item, 0),
     });
 
     this.components.sortableTable = sortableTable;

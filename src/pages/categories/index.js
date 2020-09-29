@@ -27,7 +27,7 @@ export default class Page {
     return `
     <div class="categories">
       <div class="content__top-panel">
-        <h1 class="page-title">Категории товаров</h1>
+        <h1 class="page-title">Product categories</h1>
       </div>
       <div data-element="categories">
         <!-- categories component -->

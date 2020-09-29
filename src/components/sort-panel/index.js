@@ -29,18 +29,18 @@ export default class SortPanel {
     <div class="content-box content-box_small">
       <form class="form-inline">
         <div class="form-group">
-          <label class="form-label">Сортировать по:</label>
-          <input type="text" data-element="filterName" class="form-control" placeholder="Название товара">
+          <label class="form-label">Sort by:</label>
+          <input type="text" data-element="filterName" class="form-control" placeholder="Product Name">
         </div>
       <div data-element="doubleSlider">
         <!-- double-slider component -->
       </div>
       <div class="form-group">
-        <label class="form-label">Статус:</label>
+        <label class="form-label">Status:</label>
         <select class="form-control" data-element="filterStatus">
-          <option value="" selected="">Любой</option>
-          <option value="1">Активный</option>
-          <option value="0">Неактивный</option>
+          <option value="" selected="">Any</option>
+          <option value="1">Active</option>
+          <option value="0">Inactive</option>
         </select>
       </div>
     </form>

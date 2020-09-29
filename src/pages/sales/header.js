@@ -18,8 +18,8 @@ const header = [
     sortType: 'string',
     template: data => {
       return `<div class="sortable-table__cell">
-        ${data ? new Date(data).toLocaleString() : ''}
-      </div>`;
+          ${data ? new Date(data).toLocaleString() : ''}
+        </div>`;
     }
   },
   {
@@ -35,10 +35,10 @@ const header = [
     sortType: 'number',
     template: data => {
       return `<div class="sortable-table__cell">
-        ${data > 0 ? 'Delivered' : 'Delivery'}
-      </div>`;
+          ${data > 0 ? 'Delivered' : 'Delivering'}
+        </div>`;
     }
   },
 ];
-  
+
 export default header;
